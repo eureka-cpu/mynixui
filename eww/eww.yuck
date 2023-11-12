@@ -4,7 +4,7 @@
                         :x      "0"          ; Position of the window. Values may be provided in px or %.
                         :y      "0"          ; Will be relative to anchor.
                         :width  "100%"
-                        :height "2.2%")
+                        :height "2.4%")
     :stacking  "fg"     ; Possible values: fg, bg, overlay, bottom.
     :exclusive "true"   ; Whether the compositor should reserve space for the window.
     :focusable "false"  ; This is necessary for any widgets that use the keyboard to work.
@@ -17,17 +17,23 @@
          :halign "center"
          :width  "100%"
          :height "2.2%"
-    (system_date)
-    (system_time)
+    (clock)
     )
 )
 
-; Topbar items
-(defpoll get_date :interval "1s" "date +[%m/%d]")
-(defwidget system_date []
-    (label :text get_date)
-)
-(defpoll get_time :interval "1s" "date +[%H:%M]")
-(defwidget system_time []
-    (label :text get_time)
+; Time & Date
+(defvar left_rev false)
+(defwidget clock []
+  (eventbox :class "date button" :cursor "pointer"
+    :onclick {left_rev ? "eww update left_rev=false" : "eww update left_rev=true"}
+    (box :class "date" :space-evenly false :spacing 10
+      (box :class "clock" :space-evenly false :spacing 3
+        (label :class "clock hour" :text {formattime(EWW_TIME, "%I")})
+        (label :class "clock ellipsis" :text ":")
+        (label :class "clock minute" :text {formattime(EWW_TIME, "%M")})
+      )
+      (image :class "distro" :path "./distro-logos/nixos-original.svg" :image-width 15 :image-height 15) ; how to make this dynamic?
+      (label :class "today" :text {formattime(EWW_TIME, "%a %b %d")})
+    )
+  )
 )
