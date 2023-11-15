@@ -3,8 +3,8 @@
     :geometry (geometry :anchor "top center" ; Values include top, center, bottom and left, center, right.
                         :x      "0"          ; Position of the window. Values may be provided in px or %.
                         :y      "0"          ; Will be relative to anchor.
-                        :width  "100%"
-                        :height "2.4%")
+                        :width  "101%"
+                        :height "2.8%")
     :stacking  "fg"     ; Possible values: fg, bg, overlay, bottom.
     :exclusive "true"   ; Whether the compositor should reserve space for the window.
     :focusable "false"  ; This is necessary for any widgets that use the keyboard to work.
@@ -18,7 +18,58 @@
          :width  "100%"
          :height "2.2%"
     (clock)
+    (battery)
+    (system_resources)
     )
+)
+
+; Battery
+(defwidget battery []
+  (box :class "battery"
+    (label :class "battery percentage" :text "${EWW_BATTERY["BAT0"]["capacity"]}%")
+  )
+)
+
+; RAM
+(defwidget system_resources []
+  (box :class "system_resources"
+(system_progress
+      :css "cpu"
+      :tip "CPU ${round(EWW_CPU.avg,0)}%"
+      :data {round(EWW_CPU.avg, 0)} 
+      :icon ""
+    )
+    (system_progress
+      :css "ram"
+      :tip "RAM ${round(EWW_RAM.used_mem / 1048576, 2)}MB"
+      :data {round(EWW_RAM.used_mem_perc, 0)}
+      :icon ""
+    )
+    (system_progress
+      :css "temp"
+      :tip "Temperature ${EWW_TEMPS["CORETEMP_PACKAGE_ID_0"]}°C"
+      :data {round(EWW_TEMPS.CORETEMP_PACKAGE_ID_0, 0)} 
+      :icon ""
+    )
+  )
+)
+(defwidget system_progress [data icon css tip] 
+  (box 
+    :class "progress" 
+    (circular-progress
+      :class css
+      :value data
+      :thickness 8
+      :tooltip tip
+      (overlay
+        :valign "center"
+        (label 
+          :class "icon" 
+          :text icon
+        )
+      )
+    )
+  )
 )
 
 ; Time & Date
