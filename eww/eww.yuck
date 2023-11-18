@@ -20,6 +20,8 @@
     (clock)
     (battery)
     (system_resources)
+    (_network :strength net :offline "?" :excellent "!!" :good "!"
+                :okay ".." :slow "..?")
     )
 )
 
@@ -72,6 +74,20 @@
     )
   )
 )
+
+(defpoll net :interval "100s"
+  :initial `N/A`
+  `nmcli -t -f SIGNAL,ACTIVE device wifi \
+    | awk -F':' '{if($2=="yes")print$1}'`)
+
+(defwidget _network [strength offline excellent good okay slow]
+  (box :class "net-box"
+       :space-evenly false
+       :spacing 8
+    (label :text {strength == "" ? offline :
+      strength < 26 ? slow :
+        strength < 51 ? okay :
+          strength < 76 ? good : excellent})))
 
 ; Time & Date
 (defvar left_rev false)
