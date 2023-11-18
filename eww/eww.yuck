@@ -26,6 +26,7 @@
 ; Battery
 (defwidget battery []
   (box :class "battery"
+    (label :class "battery percentage" :text "${EWW_BATTERY["BAT0"]["status"]}:")
     (label :class "battery percentage" :text "${EWW_BATTERY["BAT0"]["capacity"]}%")
   )
 )
@@ -33,7 +34,7 @@
 ; RAM
 (defwidget system_resources []
   (box :class "system_resources"
-(system_progress
+    (system_progress
       :css "cpu"
       :tip "CPU ${round(EWW_CPU.avg,0)}%"
       :data {round(EWW_CPU.avg, 0)} 
