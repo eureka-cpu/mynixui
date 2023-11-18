@@ -4,7 +4,7 @@
                       :x      "0"          ; Position of the window. Values may be provided in px or %.
                       :y      "0"          ; Will be relative to anchor.
                       :width  "101%"
-                      :height "3%")
+                      :height "2.8%")
   :stacking  "fg"     ; Possible values: fg, bg, overlay, bottom.
   :exclusive "true"   ; Whether the compositor should reserve space for the window.
   :focusable "false"  ; This is necessary for any widgets that use the keyboard to work.
