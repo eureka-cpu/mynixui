@@ -21,6 +21,9 @@
     (battery)
     (system_resources)
     (_network :strength net :offline "󰤮" :excellent "󰤨" :good "󰤥" :okay "󰤢" :slow "󰤟")
+    (_buttons :shutdown "poweroff" :reboot "reboot"
+              :logout "loginctl kill-session self"
+              :shutdown_icon "󰐦" :reboot_icon "󰜉" :logout_icon "󰍂") ; 
   )
 )
 
@@ -87,6 +90,16 @@
       strength < 26 ? slow :
         strength < 51 ? okay :
           strength < 76 ? good : excellent})))
+
+(defwidget _buttons [shutdown shutdown_icon reboot
+                    reboot_icon logout logout_icon]
+  (box :class "btns-box" :spacing 5
+       :vexpand true :hexpand true
+       :valign "end" :halign "end"
+       :space-evenly false
+    (button :onclick shutdown shutdown_icon)
+    (button :onclick reboot reboot_icon)
+    (button :onclick logout logout_icon)))
 
 ; Time & Date
 (defvar left_rev false)
