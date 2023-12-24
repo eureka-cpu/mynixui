@@ -1,0 +1,9 @@
+[workspace]
+members = [
+  "controls",
+  "notifications",
+]
+resolver = "2"
+
+[workspace.dependencies]
+nix = { version = "0.27", features = [ "hostname", "net" ] }
